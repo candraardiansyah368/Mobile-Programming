@@ -11,6 +11,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,9 +26,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ==========================================
-// 1. MODEL CLASS
-// ==========================================
 class UserModel {
   final int? id;
   final String email;
@@ -64,9 +62,7 @@ class UserModel {
   }
 }
 
-// ==========================================
-// 2. SERVICE CLASS
-// ==========================================
+
 class UserService {
   static const String baseUrl = 'https://reqres.in/api/users';
 
@@ -129,9 +125,7 @@ class UserService {
   }
 }
 
-// ==========================================
-// 3. UI: LIST & DELETE
-// ==========================================
+
 class UserListScreen extends StatefulWidget {
   const UserListScreen({super.key});
 
@@ -282,9 +276,7 @@ class _UserListScreenState extends State<UserListScreen> {
   }
 }
 
-// ==========================================
-// 4. UI: FORM CREATE (POST)
-// ==========================================
+
 class CreateUserScreen extends StatefulWidget {
   const CreateUserScreen({super.key});
 
@@ -298,7 +290,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
   final _lastNameCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   
-  // Menggunakan FocusNode agar otomatisasi pindah kolom lancar
+
   final FocusNode _lastNameFocus = FocusNode();
   final FocusNode _emailFocus = FocusNode();
 
@@ -316,7 +308,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
   }
 
   void _submitData() async {
-    // Mengecek apakah validasi email dan teks berhasil
+   
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
       try {
@@ -328,7 +320,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
         
         final finalUser = UserModel(
           id: DateTime.now().millisecondsSinceEpoch,
-          email: _emailCtrl.text.toLowerCase().trim(), // Memastikan email format huruf kecil
+          email: _emailCtrl.text.toLowerCase().trim(),
           firstName: apiUser.firstName,
           lastName: apiUser.lastName,
           avatar: apiUser.avatar,
@@ -364,7 +356,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                 controller: _firstNameCtrl,
                 decoration: const InputDecoration(labelText: 'First Name'),
                 textInputAction: TextInputAction.next,
-                // Saat tekan Enter, kursor lompat ke Last Name
+             
                 onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_lastNameFocus),
                 validator: (val) => val == null || val.trim().isEmpty ? 'First Name wajib diisi' : null,
               ),
@@ -374,7 +366,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                 focusNode: _lastNameFocus,
                 decoration: const InputDecoration(labelText: 'Last Name'),
                 textInputAction: TextInputAction.next,
-                // Saat tekan Enter, kursor lompat ke Email
+               
                 onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_emailFocus),
                 validator: (val) => val == null || val.trim().isEmpty ? 'Last Name wajib diisi' : null,
               ),
@@ -385,12 +377,12 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                 decoration: const InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.done,
-                // Saat tekan Enter, langsung jalankan fungsi Simpan
+           
                 onFieldSubmitted: (_) => _submitData(),
                 validator: (val) {
                   if (val == null || val.trim().isEmpty) return 'Email wajib diisi';
                   
-                  // Validasi Ketat: Cek apakah diakhiri dengan domain yang diizinkan
+                 
                   String emailInput = val.trim().toLowerCase();
                   if (!emailInput.endsWith('@gmail.com') && 
                       !emailInput.endsWith('@hotmail.com') && 
@@ -416,9 +408,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
   }
 }
 
-// ==========================================
-// 5. UI: FORM UPDATE (PUT)
-// ==========================================
+
 class UpdateUserScreen extends StatefulWidget {
   final UserModel user;
   const UpdateUserScreen({super.key, required this.user});
